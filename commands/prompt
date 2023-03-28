@@ -1,0 +1,17 @@
+#!/bin/bash
+
+source_directory="$PWD"
+target_file="$PWD/prompt.md"
+
+if [ "$#" -eq 1 ]; then
+    source_directory="$1"
+elif [ "$#" -eq 2 ]; then
+    source_directory="$1"
+    target_file="$2"
+elif [ "$#" -gt 2 ]; then
+    echo "Error: Invalid number of arguments."
+    echo "Usage: prompt [source_directory] [target_file]"
+    exit 1
+fi
+
+python3 ~/scripts/src/prompt.py "$source_directory" "$target_file"
