@@ -19,8 +19,9 @@ def translate_to_terminal_command(text):
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "Translate English text to terminal commands. Respond with only the terminal command and no other text."},
-                {"role": "user", "content": text},
+                {"role": "system", "content": "Translate natural language text to terminal commands. Respond in the format 'Command: <command>'"},
+                {"role": "user", "content": f"Platform: {sys.platform}"},
+                {"role": "user", "content": f"Natural language text text: {text}"},
             ]
         )
     except Exception as e:
@@ -32,11 +33,14 @@ def translate_to_terminal_command(text):
 
 def process_command(command):
     command = command.strip()
+    if command.startswith("Command:"):
+        command = command[8:].strip()
     if command.startswith("```") and command.endswith("```"):
         command = command[3:-3].strip()
     if command.startswith("`") and command.endswith("`"):
         command = command[1:-1].strip()
     return command
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -47,4 +51,7 @@ if __name__ == "__main__":
     translated_command = translate_to_terminal_command(input_string).strip()
     translated_command = process_command(translated_command)
     print(translated_command)
-    pyperclip.copy(translated_command)
+    try:
+        pyperclip.copy(translated_command)
+    except pyperclip.PyperclipException:
+        pass
