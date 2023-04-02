@@ -3,12 +3,12 @@
 source_directory="$PWD"
 target_file="$PWD/prompt.md"
 
-if [ "$#" -eq 1 ]; then
-    source_directory="$1"
-elif [ "$#" -eq 2 ]; then
-    source_directory="$1"
-    target_file="$2"
-elif [ "$#" -gt 2 ]; then
+if [ "$#" -eq 1 ]; then # If there is one argument
+    source_directory="$1" # Set the source directory to the argument
+elif [ "$#" -eq 2 ]; then # If there are two arguments
+    source_directory="$1" # Set the source directory to the first argument
+    target_file="$2" # Set the target file to the second argument
+elif [ "$#" -gt 2 ]; then # If there are more than two arguments show an error
     echo "Error: Invalid number of arguments."
     echo "Usage: prompt [source_directory] [target_file]"
     exit 1

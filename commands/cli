@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Set the path to the virtual environment
+VENV_PATH=~/scripts/.env
+
+# Activate the virtual environment
+source $VENV_PATH/bin/activate
+
+# Concatenate all command-line arguments
+input_string=""
+for arg in "$@"
+do
+    input_string+="$arg "
+done
+
+# Remove the trailing space
+input_string=${input_string% }
+
+# Run the cli.py script with the concatenated input string
+python ~/scripts/src/cli.py "$input_string"
+
+# Deactivate the virtual environment
+deactivate
