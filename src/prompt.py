@@ -60,3 +60,9 @@ target_file = sys.argv[2]
 prompt = prompt_gen(source_dir, target_file)
 with open(target_file, "w") as f:
     f.write(prompt)
+
+
+import tiktoken
+# print number of tokens in prompt
+encoding4 = tiktoken.encoding_for_model("gpt-4")
+print(f"GPT-4 prompt length: {len(encoding4.encode(prompt))}")

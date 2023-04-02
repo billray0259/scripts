@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Set the path to the virtual environment
+VENV_PATH=~/scripts/.env
+
+# Activate the virtual environment
+source $VENV_PATH/bin/activate
+
 source_directory="$PWD"
 target_file="$PWD/prompt.md"
 
@@ -15,3 +21,6 @@ elif [ "$#" -gt 2 ]; then # If there are more than two arguments show an error
 fi
 
 python3 ~/scripts/src/prompt.py "$source_directory" "$target_file"
+
+# Deactivate the virtual environment
+deactivate
