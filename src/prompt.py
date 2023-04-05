@@ -1,24 +1,7 @@
 import sys
-import os
-import subprocess
-import re
+import tiktoken
 
-
-def find_files(directory):
-    """Return a list of all files under 'directory' and its subdirectories."""
-    files = []
-    for root, dirs, filenames in os.walk(directory):
-        for filename in filenames:
-            files.append(os.path.join(root, filename))
-    return files
-
-
-def tree_str(directory):
-    """Runs the tree command on the specified directory and returns the output."""
-    tree = subprocess.run(["tree", "-C", directory], stdout=subprocess.PIPE)
-    output = tree.stdout.decode("utf-8")
-    ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
-    return ansi_escape.sub('', output)
+from lib.file_data_bundle import FileDataBundle
 
 
 def prompt_gen(directory, ignore=None):
@@ -36,33 +19,30 @@ def prompt_gen(directory, ignore=None):
     ```
     ...
     """
+
+    file_bundle = FileDataBundle.bundle_directory(directory)
+
+    if ignore is not None:
+        file_bundle.pop(ignore, None)
     
-    files = find_files(directory)
+    files = list(file_bundle.keys())
+    files.sort()
+    files_str = "\n".join(files)
+    return f"File Structure:\n{files_str}\n\n{str(file_bundle)}"
+
+
+def main(source_dir, target_file):
+    prompt = prompt_gen(source_dir, ignore=target_file)
+    with open(target_file, "w") as f:
+        f.write(prompt)
     
-    prompt = ".\n" + "\n".join(tree_str(directory).splitlines()[1:-2])
-    prompt += "\n\n"
-    for file in files:
-        with open(file, "r") as f:
-            contents = f.read()
-
-        relative_path = os.path.relpath(file, directory)
-        
-        prompt += f"{relative_path}\n"
-        prompt += "```\n"
-        prompt += contents
-        prompt += "\n```\n\n"
-    return prompt
+    gpt4_encoding = tiktoken.encoding_for_model("gpt-4")
+    print(f"GPT-4 prompt length: {len(gpt4_encoding.encode(prompt))}")
 
 
-source_dir = sys.argv[1]
-target_file = sys.argv[2]
-
-prompt = prompt_gen(source_dir, target_file)
-with open(target_file, "w") as f:
-    f.write(prompt)
-
-
-import tiktoken
-# print number of tokens in prompt
-encoding4 = tiktoken.encoding_for_model("gpt-4")
-print(f"GPT-4 prompt length: {len(encoding4.encode(prompt))}")
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print("Usage: python prompt.py <source_dir> <target_file>")
+        sys.exit(1)
+    
+    main(sys.argv[1], sys.argv[2])
