@@ -20,8 +20,13 @@ def summarize_files(files, model="gpt-3.5-turbo"):
     summaries = {}
     for file in files:
         print(f"Summarizing {file}...")
-        with open(file, "r") as f:
-            contents = f.read()
+        try:
+            with open(file, "r") as f:
+                contents = f.read()
+        # except binary files
+        except UnicodeDecodeError:
+            print(f"Skipping {file} (UnicodeDecodeError)...")
+            continue
         basename = os.path.basename(file)
         try:
             response = openai_lib.chat_prompt(
