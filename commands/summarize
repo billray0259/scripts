@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Set the path to the virtual environment
+VENV_PATH=~/scripts/.env
+
+# Activate the virtual environment
+source $VENV_PATH/bin/activate
+
+source_directory="$PWD"
+target_file="$PWD/summary.md"
+model="gpt-3.5-turbo"
+
+if [ "$#" -eq 1 ]; then # If there is one argument
+    source_directory="$1" # Set the source directory to the argument
+elif [ "$#" -eq 2 ]; then # If there are two arguments
+    source_directory="$1" # Set the source directory to the first argument
+    target_file="$2" # Set the target file to the second argument
+elif [ "$#" -eq 3 ]; then # If there are three arguments
+    source_directory="$1" # Set the source directory to the first argument
+    target_file="$2" # Set the target file to the second argument
+    model="$3" # Set the model to the third argument
+elif [ "$#" -gt 3 ]; then # If there are more than three arguments show an error
+    echo "Error: Invalid number of arguments."
+    echo "Usage: summarize [source_directory] [target_file] [model]"
+    exit 1
+fi
+
+python3 ~/scripts/src/summarize.py "$source_directory" "$target_file" "$model"
+
+# Deactivate the virtual environment
+deactivate
