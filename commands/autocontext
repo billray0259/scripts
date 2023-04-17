@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Set the path to the virtual environment
+VENV_PATH=~/scripts/.env
+
+# Activate the virtual environment
+source $VENV_PATH/bin/activate
+
+# Concatenate all command-line arguments
+instructions=""
+for arg in "$@"
+do
+    instructions+="$arg "
+done
+
+# Remove the trailing space
+instructions=${instructions% }
+
+# get current directory
+current_directory="$PWD"
+
+# Run the cli.py script with the concatenated input string
+python ~/scripts/src/autocontext.py $current_directory "$instructions"
+
+# Deactivate the virtual environment
+deactivate

@@ -1,0 +1,1 @@
+Create a script `generate.py` that, given relevant files and some user instruction, can generate a .patch file that addresses the user's instructions. The user's instructions could require any modification/creation/deletion of the files and may or may not require significant assumptions to be made about the user's goals.
