@@ -1,6 +1,6 @@
 Clone this repository to your home directory
 
-add the OPENAI_API_KEY.txt file to the root of the repository with your OpenAI API key
+Create a `.env` file containing the text `OPENAI_API_KEY=your_key_here`
 
 Add this to your .bashrc or .zshrc:
 `export PATH="$PATH:$HOME/scripts/commands"`
@@ -11,7 +11,7 @@ Setup the virtual environment
 
 ```
 cd ~/scripts
-python3 -m venv .env
-source .env/bin/activate
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```

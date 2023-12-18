@@ -1,3 +1,4 @@
-.env/
-OPENAI_API_KEY.txt
+venv/
+.env
 __pycache__/
+prompt/

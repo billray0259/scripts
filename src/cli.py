@@ -1,17 +1,14 @@
 import sys
-import openai
 import pyperclip
 
 import lib.openai_lib as openai_lib
+import openai
+
+
+
 
 
 def translate_to_terminal_command(text):
-    try:
-        openai.api_key = openai_lib.get_api_key()
-    except Exception as e:
-        print("Error: ", e)
-        sys.exit(1)
-
     try:
         return openai_lib.chat_prompt(
             system_message="Translate natural language text to terminal commands. Respond in the format 'Command: <command>'",

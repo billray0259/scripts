@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the path to the virtual environment
-VENV_PATH=~/scripts/.env
+VENV_PATH=~/scripts/venv
 
 # Activate the virtual environment
 source $VENV_PATH/bin/activate

@@ -1,22 +1,17 @@
 import sys
 import os
 
-import openai
 
 import lib.openai_lib as openai_lib
 from lib.util import find_files
 from lib.file_data_bundle import FileDataBundle
 
+import openai
+
 
 
 # for every file, read it and summarize it. Return a dictionary of file paths to summaries
 def summarize_files(files, model="gpt-3.5-turbo"):
-    try:
-        openai.api_key = openai_lib.get_api_key()
-    except Exception as e:
-        print("Error: ", e)
-        sys.exit(1)
-
     summaries = {}
     for file in files:
         print(f"Summarizing {file}...")
